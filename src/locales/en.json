@@ -1,0 +1,7 @@
+{
+  "locales":{
+    "en": "English",
+    "ar" : "عربي"
+  },
+  "message": "hello i18n !!"
+}

@@ -1,7 +1,10 @@
 import { createStore } from "vuex";
+import Cookies from "js-cookie";
 
 export default createStore({
-  state: {},
+  state: {
+    locale : Cookies.get("locale")|| "ar",
+  },
   getters: {},
   mutations: {},
   actions: {},
