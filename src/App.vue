@@ -1,25 +1,21 @@
 <template>
-<locale-switcher />
+<div  :class="{ 'is-rtl': $i18n.locale === 'ar' }">
+<main-header />
+</div>
 </template>
 
 <script>
-import LocaleSwitcher from './components/LocaleSwitcher.vue';
+import MainHeader from './components/MainHeader.vue';
 
 export default {
   name: "App",
   components: {
-    LocaleSwitcher,
+    MainHeader
   },
 };
 </script>
+    
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
