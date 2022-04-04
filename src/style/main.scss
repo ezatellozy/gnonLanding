@@ -1,4 +1,9 @@
-@import "tailwind";
+@import 'tailwind';
+
+:root {
+  scroll-behavior: smooth;
+}
+
 .is-rtl {
-    direction: rtl;
-  }
+  direction: rtl;
+}

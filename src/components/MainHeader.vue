@@ -1,45 +1,78 @@
 <template>
-  <header class="bg-secondary flex items-center"  :class="scroll ? 'scroll' : ''">
-      <div class="container mx-auto flex justify-between items-center">
-
-      <locale-switcher />
+  <header class="flex items-center" :class="scroll ? 'scroll' : ''">
+    <div class="container mx-auto flex justify-between items-center">
       <div class="logo text-white">LOGO</div>
+      <div class="nav">
+        <ul class="flex justify-between items-center">
+          <li><a href="#aboutUs">About us</a></li>
+          <li><a href="#statistics">Statistics</a></li>
+          <li><a href="#testimonials">Reviews</a></li>
+          <li><a href="#getStarted">Get started</a></li>
+        </ul>
       </div>
+      <!-- <locale-switcher /> -->
+    </div>
   </header>
 </template>
 
 <script>
-import LocaleSwitcher from './LocaleSwitcher.vue'
+// import LocaleSwitcher from './LocaleSwitcher.vue'
 export default {
-    components:{LocaleSwitcher},
-    data(){
-        return{
-
-            scroll:false
-        }
-    },
-      created() {
-    window.addEventListener("scroll", this.checkScroll);
+  // components: { LocaleSwitcher },
+  data() {
+    return {
+      scroll: false,
+    }
+  },
+  created() {
+    window.addEventListener('scroll', this.checkScroll)
   },
   methods: {
     checkScroll() {
       if (window.scrollY > 50) {
-        this.scroll = true;
-        return;
+        this.scroll = true
+        return
       }
-      this.scroll = false;
-      return;
+      this.scroll = false
+      return
     },
   },
-
 }
 </script>
 
 <style scoped lang="scss">
-header{
-    min-height: 40px;
-    max-height: 40px;
-    animation: fadeUp 0.8s linear;
+header {
+  z-index: 100;
+  min-height: 110px;
+  max-height: 110px;
+  background: linear-gradient(to right, #43cea2, #185a9d);
+  animation: fadeUp 0.8s linear;
+
+  .nav {
+    li {
+      margin-right: 30px;
+      a {
+        position: relative;
+        @apply text-white font-bold text-sm md:text-lg;
+        &::before {
+          content: '';
+          transition: 0.3s;
+          position: absolute;
+          bottom: -10px;
+          left: 0;
+          height: 2px;
+          width: 0;
+          background-color: #43cea2;
+        }
+        &:hover {
+          &::before {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+
   &.scroll {
     animation: fadeIn 0.8s linear;
     position: fixed;
@@ -62,9 +95,9 @@ header{
 @keyframes fadeUp {
   0% {
     transform: translateY(2px);
-      opacity: 0;
+    opacity: 0;
   }
-  
+
   100% {
     transform: translateY(0px);
     opacity: 1;

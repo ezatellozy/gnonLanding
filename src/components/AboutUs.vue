@@ -1,0 +1,40 @@
+<template>
+  <section id="aboutUs" class="about-us flex items-center">
+    <div class="container m-auto flex py-11 justify-between flex-wrap">
+      <div class="info px-11 my-auto w-full md:w-1/2">
+        <h3 class="text-center font-bold text-2xl text-third mb-4">
+          EASY TO USE FRIENDLY INTERFACE.
+        </h3>
+        <p class="mb-11 text-center text-md">
+          Lorem Ipsum is simply text of the printing and typesetting industry.It
+          has survived not only five centuries.No one cares about products.
+          people care about ideas. Lorem Ipsum is simply text of the printing
+          and typesetting industry.It has survived not only five centuries.
+        </p>
+      </div>
+      <div class="image w-full md:w-1/2">
+        <img
+          class="w-full rounded-full"
+          src="@/assets/technology.png"
+          alt="gnon"
+        />
+      </div>
+    </div>
+  </section>
+</template>
+
+<script>
+export default {}
+</script>
+
+<style scoped lang="scss">
+.about-us {
+  min-height: 600px;
+  .info {
+    p {
+      line-height: 1.7;
+      word-break: break-all;
+    }
+  }
+}
+</style>
