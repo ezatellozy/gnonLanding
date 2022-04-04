@@ -1,7 +1,7 @@
 <template>
   <header class="flex items-center" :class="scroll ? 'scroll' : ''">
     <div class="container mx-auto flex justify-between items-center">
-      <div class="logo text-white">LOGO</div>
+      <div class="logo text-white font-bold mx-11">LOGO</div>
       <div class="nav">
         <ul class="flex justify-between items-center">
           <li><a href="#aboutUs">About us</a></li>
