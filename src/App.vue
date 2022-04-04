@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'is-rtl': $i18n.locale === 'ar' }">
-    <main-header />
+    <!-- <main-header /> -->
     <bunner />
     <about-us />
     <statistics />
@@ -12,7 +12,7 @@
 
 <script>
 import Bunner from './components/Bunner.vue'
-import MainHeader from './components/MainHeader.vue'
+// import MainHeader from './components/MainHeader.vue'
 import Testimonials from './components/Testimonials.vue'
 import GetStarted from './components/GetStarted.vue'
 import Statistics from './components/Statistics.vue'
@@ -22,7 +22,7 @@ import GoTop from './components/GoTop.vue'
 export default {
   name: 'App',
   components: {
-    MainHeader,
+    // MainHeader,
     AboutUs,
     Bunner,
     GetStarted,

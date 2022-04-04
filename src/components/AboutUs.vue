@@ -1,7 +1,12 @@
 <template>
   <section id="aboutUs" class="about-us flex items-center">
     <div class="container m-auto flex py-11 justify-between flex-wrap">
-      <div class="info px-11 my-auto w-full md:w-1/2 fade-in-left">
+      <div class="image md:w-1/2 fade-in-left">
+        <figure>
+          <img class="mx-auto" src="@/assets/mobile.webp" alt="gnon" />
+        </figure>
+      </div>
+      <div class="info px-11 my-auto w-full md:w-1/2 fade-in-right">
         <h3 class="text-center font-bold text-2xl text-third mb-4">
           EASY TO USE FRIENDLY INTERFACE.
         </h3>
@@ -11,13 +16,6 @@
           people care about ideas. Lorem Ipsum is simply text of the printing
           and typesetting industry.It has survived not only five centuries.
         </p>
-      </div>
-      <div class="image w-full md:w-1/2 fade-in-right">
-        <img
-          class="w-full rounded-full"
-          src="@/assets/technology.png"
-          alt="gnon"
-        />
       </div>
     </div>
   </section>
@@ -30,6 +28,11 @@ export default {}
 <style scoped lang="scss">
 .about-us {
   min-height: 600px;
+  .image {
+    img {
+      height: 500px;
+    }
+  }
   .info {
     p {
       line-height: 1.7;

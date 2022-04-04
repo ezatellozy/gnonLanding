@@ -1,5 +1,5 @@
 <template>
-  <header class="flex items-center" :class="scroll ? 'scroll' : ''">
+  <header class="flex items-center">
     <div class="container mx-auto flex justify-between items-center">
       <div class="logo text-white font-bold mx-11">LOGO</div>
       <div class="nav">
@@ -45,7 +45,7 @@ header {
   z-index: 100;
   min-height: 110px;
   max-height: 110px;
-  background: linear-gradient(to right, #43cea2, #185a9d);
+  // background: linear-gradient(to right, #43cea2, #185a9d);
   animation: fadeUp 0.8s linear;
 
   .nav {

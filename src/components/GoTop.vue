@@ -16,7 +16,6 @@ export default {
   },
   methods: {
     checkScroll() {
-      console.log(scrollY)
       if (window.scrollY > 400) {
         this.gotop = true
         return
