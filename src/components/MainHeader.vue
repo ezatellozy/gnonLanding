@@ -1,34 +1,83 @@
 <template>
-  <header class="flex items-center">
+  <header class="flex items-center" :class="scroll ? 'scroll bg-white' : ''">
     <div class="container mx-auto flex justify-between items-center">
-      <div class="logo text-white font-bold mx-11">LOGO</div>
-      <div class="nav">
-        <ul class="flex justify-between items-center">
-          <li><a href="#aboutUs">About us</a></li>
-          <li><a href="#statistics">Statistics</a></li>
-          <li><a href="#testimonials">Reviews</a></li>
-          <li><a href="#getStarted">Get started</a></li>
-        </ul>
+      <div class="logo font-bold mx-11">
+        <a href="#">
+          <img src="@/assets/logo.png" alt="logo" />
+        </a>
       </div>
-      <!-- <locale-switcher /> -->
+      <div class="flex items-center">
+        <locale-switcher class="mx-4" />
+        <button class="text-2xl lg:hidden" @click="mobile = !mobile">
+          <font-awesome-icon :icon="['fas', 'bars']" />
+        </button>
+        <div class="nav lg:block" :class="mobile ? 'colapsed' : ' hidden'">
+          <ul class="flex justify-between items-center">
+            <li>
+              <a href="#">{{ $t('nav.home') }}</a>
+            </li>
+            <li>
+              <a href="#features">{{ $t('nav.features') }}</a>
+            </li>
+            <li>
+              <a href="#partners">{{ $t('nav.partners') }}</a>
+            </li>
+            <li>
+              <a href="#clients">{{ $t('nav.clients') }}</a>
+            </li>
+            <li>
+              <a href="#getStarted">{{ $t('nav.Getstarted') }}</a>
+            </li>
+            <li>
+              <button
+                @click="modal"
+                class="bg-primary hover:bg-secondary text-white font-bold text-sm px-4 py-2 rounded-lg"
+              >
+                أحصل علي نسختك التجريبيه
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </header>
 </template>
 
 <script>
-// import LocaleSwitcher from './LocaleSwitcher.vue'
+import LocaleSwitcher from './LocaleSwitcher.vue'
 export default {
-  // components: { LocaleSwitcher },
+  components: { LocaleSwitcher },
   data() {
     return {
       scroll: false,
+      mobile: false,
+      mobileMenu: true,
     }
   },
   created() {
     window.addEventListener('scroll', this.checkScroll)
+    window.addEventListener('resize', this.checkSize)
   },
+  mounted() {},
   methods: {
+    modal() {
+      this.$emit('modal')
+    },
+    checkSize() {
+      if (window.innerWidth > 992) {
+        this.mobileMenu = false
+        this.mobile = false
+      } else {
+        this.mobileMenu = true
+      }
+    },
+
     checkScroll() {
+      const els = document.querySelectorAll('.scrollme')
+      els.forEach((els) => {
+        console.log(els.getBoundingClientRect().top < 0)
+      })
+      console.log(els)
       if (window.scrollY > 50) {
         this.scroll = true
         return
@@ -43,17 +92,19 @@ export default {
 <style scoped lang="scss">
 header {
   z-index: 100;
-  min-height: 110px;
-  max-height: 110px;
+  min-height: 80px;
+  max-height: 80px;
   // background: linear-gradient(to right, #43cea2, #185a9d);
   animation: fadeUp 0.8s linear;
-
+  .logo {
+    width: 50px;
+  }
   .nav {
     li {
       margin-right: 30px;
       a {
         position: relative;
-        @apply text-white font-bold text-sm md:text-lg;
+        @apply font-bold text-sm md:text-lg;
         &::before {
           content: '';
           transition: 0.3s;
@@ -68,6 +119,7 @@ header {
           &::before {
             width: 100%;
           }
+          color: #43cea2;
         }
       }
     }
@@ -81,7 +133,22 @@ header {
     width: 100%;
   }
 }
-
+.colapsed {
+  position: fixed;
+  top: 3.25rem;
+  left: 0;
+  width: 100%;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  overflow-y: auto;
+  background-color: #ffffff;
+  transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  ul {
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+    flex-direction: column;
+  }
+}
 @keyframes fadeIn {
   0% {
     transform: translateY(-10px);

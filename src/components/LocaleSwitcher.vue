@@ -6,32 +6,35 @@
     <img :src="`/images/${lang}.png`" width="20" alt="" class="mx-1" />
     <!-- <span class="w-2"></span> -->
 
-    <span class="text-white font-bold">{{
-      $t(`locales.${this.$store.state.locale}`)
-    }}</span>
+    <span class="text-bold font-bold">
+      {{ $t(`locales.${locale}`) }}
+    </span>
   </div>
 </template>
 
 <script>
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie'
 
 export default {
   data: () => ({
-    lang: "ar",
+    lang: 'ar',
   }),
 
-  mounted() {
-    this.lang = this.$i18n.locale === "ar" ? "en" : "ar";
-
+  mounted() {},
+  computed: {
+    locale() {
+      return this.$store.getters.locale
+    },
   },
 
   methods: {
     switchLang() {
-      Cookies.set("locale", this.lang);
+      this.lang = this.$i18n.locale === 'ar' ? 'en' : 'ar'
+      Cookies.set('locale', this.lang)
       setTimeout(() => {
-        window.location.reload();
-      }, 300);
+        window.location.reload()
+      }, 300)
     },
   },
-};
+}
 </script>

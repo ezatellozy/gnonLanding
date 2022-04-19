@@ -1,7 +1,30 @@
 {
-  "locales":{
-    "en": "English",
-    "ar" : "عربي"
+  "title": "Rwad CRM | Client relations system",
+  "locales": {
+    "ar": "English",
+    "en": "عربي"
+  },
+  "nav": {
+    "Getstarted": "Get started",
+    "home": "Home",
+    "clients": "Clients",
+    "partners": "Partners",
+    "features": "Features"
+  },
+
+  "misc": {
+    "partners": "Our partners",
+    "clients": "Our clients",
+    "introTitle": "RWAD CRM - Customer Relationship Management Software",
+    "introDesc": "RWAD CRM will help you in recording and saving customer data in an organized and detailed manner, facilitating the purchase process in a professional manner, and quickly communicating with them, thus increasing sales. Where the RWAD CRM system works to classify each stage of the sale according to the customer's need with the presence of customer service to record what happens with the customer in detail. And you can also connect the system through applications for Android and iPhone to make it easier for users to obtain their needs at any time and any place so that membership is available for each official according to his job in the company."
+  },
+  "placeholder": {
+    "crmUsingFor": "CRM using for",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone number",
+    "code": "Country code",
+    "number": "Number of employers using Rwad CRM"
   },
   "message": "hello i18n !!"
 }

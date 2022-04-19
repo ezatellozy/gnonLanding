@@ -1,9 +1,16 @@
 <template>
-  <section id="testimonials" class="testimonials">
+  <section id="partners" class="partners scrollme flex">
     <div class="container mx-auto my-11">
-      <h3 class="text-center font-bold text-3xl my-11 text-primary">
-        Partners
+      <h3 class="text-center font-bold text-3xl mb-4 text-primary">
+        {{ $t('misc.partners') }}
       </h3>
+      <p class="text-center text-md">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        <span class="count font-bold text-md mb-4 text-primary">
+          500
+        </span>
+        Eveniet aliquam fuga sequi, labore esse deleniti
+      </p>
       <div>
         <carousel v-bind="settings">
           <slide v-for="n in 5" :key="n">
@@ -46,9 +53,16 @@ export default {
 }
 </script>
 
-<style scoped>
-.testimonials {
-  margin-top: 150px;
-  min-height: 600px;
+<style lang="scss">
+.partners {
+  min-height: 300px;
+
+  .container {
+    > p {
+      max-width: 600px;
+      margin: 0 auto;
+      margin-bottom: 40px;
+    }
+  }
 }
 </style>

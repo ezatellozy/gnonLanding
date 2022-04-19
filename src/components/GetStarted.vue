@@ -1,27 +1,29 @@
 <template>
   <div id="getStarted" class="get-started">
-    <div
-      class="container py-11 mx-auto flex justify-between flex-wrap text-center"
-    >
-      <div class="w-full md:w-1/2">
-        <div class="info py-11">
-          <h3 class="font-bold text-white text-3xl mb-11">Download Today</h3>
-          <p class="text-md text-gray-300">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-          </p>
-        </div>
-
-        <div class="actions mt-11 flex justify-center items-center">
-          <button class="mr-2">
-            <img src="@/assets/playstore.png" alt="gnon" />
+    <div class="mx-auto flex justify-between flex-wrap text-center">
+      <!-- <div class="w-full py-11 bg-primary md:w-1/2">
+        <form class="form px-4" @submit.prevent="">
+          <div class="form-inputs">
+            <input type="text" placeholder="Email" />
+          </div>
+          <div class="form-inputs">
+            <input type="text" placeholder="Phone number" />
+          </div>
+          <div class="form-inputs">
+            <textarea type="text" placeholder="Your message" />
+          </div>
+          <button
+            type="submit"
+            class="mt-4 bg-secondary py-2 w-full font-bold rounded-lg px-4 text-white"
+          >
+            Send
           </button>
-          <button class="">
-            <img src="@/assets/appstore.png" alt="gnon" />
-          </button>
-        </div>
-      </div>
-      <div class="w-full md:w-1/2 mt-11 self-center">
-        <h4 class="text-4xl text-white mb-11">LOGO</h4>
+        </form>
+      </div> -->
+      <div class="w-full mx-auto social md:w-1/2 mt-11 self-center">
+        <h4 class="text-4xl text-white mb-11">
+          <img class="logo" src="@/assets/logo.png" alt="logo" />
+        </h4>
         <ul class="links text-white flex justify-center">
           <li>
             <a href="#">
@@ -50,7 +52,6 @@ export default {}
 
 <style scoped lang="scss">
 .get-started {
-  background: linear-gradient(to right, #43cea2, #185a9d);
   .links {
     a {
       width: 50px;
@@ -61,9 +62,14 @@ export default {}
       justify-content: center;
       border-radius: 50%;
       .icon {
-        @apply text-3xl;
+        @apply text-3xl text-primary;
       }
     }
   }
+}
+
+.logo {
+  max-width: 150px;
+  margin: 0 auto;
 }
 </style>

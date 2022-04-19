@@ -27,12 +27,12 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .gotop {
   position: fixed;
   bottom: 50px;
   right: 50px;
-  @apply bg-third text-white px-4 py-2 rounded-lg;
+  @apply bg-primary text-white px-4 py-2 rounded-lg;
   animation: bunceing 3s linear infinite;
 }
 @keyframes bunceing {
@@ -46,6 +46,15 @@ export default {
   }
   100% {
     transform: translateY(0);
+  }
+}
+
+.is-rtl {
+  .gotop {
+    position: fixed;
+    bottom: 50px;
+    left: 50px;
+    right: unset !important;
   }
 }
 </style>

@@ -19,9 +19,12 @@
     "postcss": "^8",
     "tailwindcss": "^3",
     "vue": "^3.2.13",
+    "vue-country-code": "^1.1.3",
     "vue-i18n": "^9.1.0",
     "vue-slick-carousel": "^1.0.6",
+    "vue-tel-input": "^6.0.0-beta.7",
     "vue3-carousel": "^0.1.38",
+    "vue3-country-region-select": "^1.0.0",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
