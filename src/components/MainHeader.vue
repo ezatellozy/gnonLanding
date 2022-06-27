@@ -1,12 +1,15 @@
 <template>
-  <header class="flex items-center" :class="scroll ? 'scroll bg-white' : ''">
+  <header
+    class="flex header items-center"
+    :class="scroll ? 'scroll bg-white' : ''"
+  >
     <div class="container mx-auto flex justify-between items-center">
       <div class="logo font-bold mx-11">
-        <a href="#">
+        <a href="/">
           <img src="@/assets/logo.png" alt="logo" />
         </a>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center" v-if="this.$route.name == 'home'">
         <locale-switcher class="mx-4" />
         <button class="text-2xl lg:hidden" @click="mobile = !mobile">
           <font-awesome-icon :icon="['fas', 'bars']" />
@@ -29,12 +32,12 @@
               <a href="#getStarted">{{ $t('nav.Getstarted') }}</a>
             </li>
             <li>
-              <button
-                @click="modal"
+              <router-link
+                to="/register"
                 class="bg-primary hover:bg-secondary text-white font-bold text-sm px-4 py-2 rounded-lg"
               >
                 أحصل علي نسختك التجريبيه
-              </button>
+              </router-link>
             </li>
           </ul>
         </div>
@@ -52,6 +55,7 @@ export default {
       scroll: false,
       mobile: false,
       mobileMenu: true,
+      notMain: true,
     }
   },
   created() {
@@ -73,11 +77,11 @@ export default {
     },
 
     checkScroll() {
-      const els = document.querySelectorAll('.scrollme')
-      els.forEach((els) => {
-        console.log(els.getBoundingClientRect().top < 0)
-      })
-      console.log(els)
+      // const els = document.querySelectorAll('.scrollme')
+      // els.forEach((els) => {
+      //   console.log(els.getBoundingClientRect().top < 0)
+      // })
+      // console.log(els)
       if (window.scrollY > 50) {
         this.scroll = true
         return
@@ -115,7 +119,7 @@ header {
           width: 0;
           background-color: #43cea2;
         }
-        &:hover {
+        &:hover:not(:last-child) {
           &::before {
             width: 100%;
           }
@@ -132,6 +136,13 @@ header {
     left: 0;
     width: 100%;
   }
+}
+
+header.header {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
 }
 .colapsed {
   position: fixed;

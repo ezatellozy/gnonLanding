@@ -1,26 +1,36 @@
 <template>
   <section id="clients" class="clients flex scrollme">
+    <FreeTrial v-if="trial" @modal="modal" />
     <div class="container mx-auto text-white">
-      <h3 class="text-center font-bold text-3xl mt-11 mb-4">
+      <h3
+        class="text-center font-bold text-3xl mt-11 mb-4"
+        data-aos="fade-up"
+        data-aos-anchor-placement="center-bottom"
+      >
         {{ $t('misc.clients') }}
       </h3>
 
       <p class="text-center text-md mb-11">
         نسعد بتقديم خدماتنا للعملاء الذين كانوا شركاء النجاح لنا
       </p>
-      <div style="margin: 100px 0;">
+      <div
+        style="margin: 100px 0;"
+        data-aos="fade-up"
+        data-aos-anchor-placement="center-bottom"
+      >
         <carousel v-bind="settings">
           <slide v-for="n in 5" :key="n">
             <card />
           </slide>
         </carousel>
       </div>
-      <button
+      <router-link
+        to="/register"
         @click="modal"
-        class="bg-secondary my-11 block mx-auto hover:bg-primary font-bold text-lg px-4 py-2 rounded-lg"
+        class="bg-secondary w-fit my-11 block mx-auto hover:bg-primary font-bold text-lg px-4 py-2 rounded-lg"
       >
-        أبدأ الان
-      </button>
+        {{ $t('misc.start now') }}
+      </router-link>
     </div>
   </section>
 </template>
@@ -30,24 +40,24 @@ import Card from './Card.vue'
 
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide } from 'vue3-carousel'
+import FreeTrial from './FreeTrial.vue'
 export default {
-  components: { Card, Carousel, Slide },
+  components: { Card, Carousel, Slide, FreeTrial },
   data() {
     return {
+      trial: false,
       settings: {
         autoplay: 2000,
         itemsToShow: 1,
         wrapAround: true,
-        snapAlign: 'center',
+        snapAlign: 'left',
 
         breakpoints: {
           1280: {
             itemsToShow: 4,
-            snapAlign: 'center',
           },
           768: {
             itemsToShow: 3,
-            snapAlign: 'center',
           },
         },
       },

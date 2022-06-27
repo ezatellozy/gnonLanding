@@ -3,9 +3,6 @@
     class="cursor-pointer d-flex justify-content-between align-items-center"
     @click="switchLang"
   >
-    <img :src="`/images/${lang}.png`" width="20" alt="" class="mx-1" />
-    <!-- <span class="w-2"></span> -->
-
     <span class="text-bold font-bold">
       {{ $t(`locales.${locale}`) }}
     </span>

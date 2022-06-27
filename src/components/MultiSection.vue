@@ -1,7 +1,7 @@
 <template>
   <section
     :id="name"
-    class="about-us flex items-center my-11"
+    class="about-us flex items-center"
     :class="withBg ? 'bg-third' : ''"
   >
     <div
@@ -10,7 +10,8 @@
     >
       <div
         class="image lg:w-1/2 m-auto"
-        :class="$i18n.locale == 'ar' ? 'fade-in-right' : 'fade-in-left'"
+        data-aos="fade-up"
+        data-aos-anchor-placement="center-bottom"
       >
         <figure>
           <img class="mx-auto" :src="imgSrc" alt="rwad" />
@@ -18,10 +19,9 @@
       </div>
       <div
         class="info px-11 my-auto w-full lg:w-1/2"
-        :class="[
-          $i18n.locale == 'ar' ? 'fade-in-left ' : 'fade-in-right',
-          layout,
-        ]"
+        :class="[layout]"
+        data-aos="fade-up"
+        data-aos-anchor-placement="center-bottom"
       >
         <h1 class="font-bold text-3xl text-titleColor mb-4">
           {{ mainTitle }}
@@ -30,7 +30,12 @@
           {{ description }}
         </p>
         <div v-if="features">
-          <div v-for="item in items" :key="item.id">
+          <div
+            v-for="item in items"
+            :key="item.id"
+            data-aos="fade-up"
+            data-aos-anchor-placement="center-bottom"
+          >
             <div class="title flex items-center mb-2 mt-11">
               <font-awesome-icon
                 :icon="['fas', 'magnifying-glass']"

@@ -1,9 +1,17 @@
 <template>
   <div class="card" :class="withBg ? 'bg-white' : ''">
-    <div class="card-icon">
+    <div
+      class="card-icon"
+      data-aos="fade-up"
+      data-aos-anchor-placement="center-bottom"
+    >
       <img class="rounded-full" :src="imgSrc" alt="rwad" />
     </div>
-    <div class="text-center">
+    <div
+      class="text-center"
+      data-aos="fade-up"
+      data-aos-anchor-placement="center-bottom"
+    >
       <h5 class="text-lg font-bold mb-2 text-primary">
         {{ title }}
       </h5>

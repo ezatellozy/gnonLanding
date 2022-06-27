@@ -2,17 +2,25 @@
   <section class="banner flex" id="banner">
     <free-trial v-if="trial" @modal="modal" />
 
-    <main-header class="fixed w-full" @modal="modal" />
+    <!-- <main-header class="fixed w-full" @modal="modal" /> -->
     <div class="container mx-auto flex justify-between items-center flex-wrap">
-      <div class="info xl:px-11 mb-11 w-full lg:w-1/2">
+      <div
+        class="info xl:px-11 mb-11 w-full lg:w-1/2"
+        data-aos="zoom-in"
+        data-aos-duration="1500"
+      >
         <h1 class="text-3xl text-primary">
           {{ $t('misc.introTitle') }}
         </h1>
-        <h2 class="mb-11 text-md">
+        <h2 class="mt-11 pt-4 text-lg line-height">
           {{ $t('misc.introDesc') }}
         </h2>
       </div>
-      <div class="image w-full lg:w-1/2">
+      <div
+        class="image w-full lg:w-1/2"
+        data-aos="zoom-in"
+        data-aos-duration="1500"
+      >
         <img
           src="@/assets/header-bulb-table.png"
           class="w-full"
@@ -25,9 +33,9 @@
 
 <script>
 import FreeTrial from '@/components/FreeTrial.vue'
-import MainHeader from './MainHeader.vue'
+// import MainHeader from './MainHeader.vue'
 export default {
-  components: { MainHeader, FreeTrial },
+  components: { FreeTrial },
   data() {
     return {
       trial: false,

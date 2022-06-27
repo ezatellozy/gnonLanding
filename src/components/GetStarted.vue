@@ -21,10 +21,18 @@
         </form>
       </div> -->
       <div class="w-full mx-auto social md:w-1/2 mt-11 self-center">
-        <h4 class="text-4xl text-white mb-11">
+        <h4
+          class="text-4xl text-white mb-11"
+          data-aos="fade-up"
+          data-aos-anchor-placement="center-bottom"
+        >
           <img class="logo" src="@/assets/logo.png" alt="logo" />
         </h4>
-        <ul class="links text-white flex justify-center">
+        <ul
+          class="links text-white flex justify-center"
+          data-aos="fade-up"
+          data-aos-anchor-placement="center-bottom"
+        >
           <li>
             <a href="#">
               <font-awesome-icon class="icon" :icon="['fab', 'facebook']" />

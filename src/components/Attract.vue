@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-third my-11 py-11">
+  <div class="bg-third py-11">
     <h2 class="text-center font-bold text-3xl mb-11 text-primary">
       {{ title }}
     </h2>
