@@ -4,17 +4,109 @@
       <div class="steps flex justify-between items-center">
         <span
           class="step step1"
-          :class="step1 ? 'active' : ''"
+          :class="steps.step1 ? 'active' : ''"
           @click="changeStep('step1')"
         >
           1
         </span>
-        <span class="step" :class="step2 ? 'active' : ''">2</span>
-        <span class="step" :class="step3 ? 'active' : ''">3</span>
+        <span class="step" :class="steps.step2 ? 'active' : ''">
+          2
+        </span>
+        <span class="step" :class="steps.step3 ? 'active' : ''">
+          3
+        </span>
       </div>
-      <free-trial v-if="step1" class="form px-4 mt-4" />
-      <div class="verification" v-if="step2">
-        <form class="form px-4 mt-4" @submit.prevent="">
+      <div class="trial form px-4 mt-4" v-if="steps.step1">
+        <h2 class="text-center font-bold text-xl text-primary mb-4">
+          {{ $t('misc.Enter your data to get your free trial copy') }}
+        </h2>
+        <form class="p-5" @submit.prevent="getCode">
+          <div class="form-inputs">
+            <input
+              class="w-full"
+              type="text"
+              required
+              v-model="userData.name"
+              :placeholder="$t('placeholder.name')"
+            />
+          </div>
+          <div class="form-inputs flex justify-between">
+            <select
+              class="w-4/12"
+              :class="$i18n.locale == 'en' ? 'mr-2' : 'ml-2'"
+              name="country-code"
+              v-model="userData.countryCode"
+            >
+              <option
+                v-for="country in countries"
+                :key="country"
+                :value="country.code"
+                name="country-code"
+              >
+                {{ country.code }}
+              </option>
+            </select>
+            <input
+              class="w-8/12"
+              type="phone"
+              required
+              v-model="userData.phone"
+              :placeholder="$t('placeholder.phone')"
+            />
+          </div>
+
+          <div class="form-inputs">
+            <input
+              class="w-full"
+              type="email"
+              v-model="userData.email"
+              required
+              :placeholder="$t('placeholder.email')"
+            />
+          </div>
+          <div class="form-inputs">
+            <select
+              name="country-code"
+              required
+              class="w-full"
+              v-model="userData.work"
+            >
+              <option value="" disabled>
+                {{ $t('placeholder.crmUsingFor') }}
+              </option>
+              <option
+                v-for="item in workType"
+                :key="item.id"
+                :value="item.id"
+                name="work-code"
+              >
+                {{ item.value }}
+              </option>
+            </select>
+          </div>
+          <div class="form-inputs">
+            <input
+              class="w-full"
+              type="text"
+              required
+              v-model="userData.employers"
+              :placeholder="$t('placeholder.number')"
+            />
+          </div>
+          <div class="err-msg">{{ errMsg }}</div>
+
+          <button
+            type="submit"
+            id="sign-in-button"
+            class="mt-4 bg-secondary py-2 w-full font-bold rounded-lg px-4 text-white"
+          >
+            {{ $t('buttons.Start Now') }}
+          </button>
+        </form>
+      </div>
+      <!-- <free-trial  @data="getdata" class="form px-4 mt-4" /> -->
+      <div class="verification" v-if="steps.step2">
+        <form class="form px-4 mt-4" @submit.prevent="verfiy">
           <span class="block mb-4 text-center">
             <font-awesome-icon
               class="icon text-primary"
@@ -27,8 +119,11 @@
           </h2>
           <p class="text-gray-400 text-center mb-4">
             {{ $t('misc.Enter the code sent to') }}
-            <span class="text-black font-bold">1101010101010</span>
+            <span class="text-black font-bold">
+              {{ `${userData.countryCode}${userData.phone}` }}
+            </span>
           </p>
+          <div class="err-msg">{{ errMsg }}</div>
           <div class="form-inputs text-center">
             <input
               id="verfication"
@@ -52,11 +147,29 @@
           </button>
         </form>
       </div>
-      <div class="result" v-if="step3">
-        <div class="mt-11 p-5 border">
+      <div class="result" v-if="steps.step3">
+        <div class="mt-11 px-4 p-5 border">
           <h2 class="font-bold text-xl text-center mb-4">
             {{ $t('misc.your free trial details') }}
           </h2>
+          <div class="info">
+            <p v-if="demoData.link">
+              Link :
+              <a :href="demoData.link" target="_blank">{{ demoData.link }}</a>
+            </p>
+            <p v-if="demoData.username">
+              username :
+              <span>
+                {{ demoData.username }}
+              </span>
+            </p>
+            <p v-if="demoData.password">
+              password :
+              <span>
+                {{ demoData.password }}
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -72,23 +185,212 @@
 </template>
 
 <script>
-import FreeTrial from '@/components/FreeTrial.vue'
+// import firebase from 'firebase'
+
+import {
+  getAuth,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from 'firebase/auth'
+import { reactive, ref } from 'vue'
+import axios from 'axios'
+
 export default {
-  components: { FreeTrial },
   data() {
     return {
-      step1: false,
-      step2: true,
-      step3: false,
+      countries: [
+        {
+          code: '+971',
+          name: 'United Arab Emirates',
+        },
+        {
+          code: '+965',
+          name: 'Kuwait',
+        },
+        {
+          code: '+973',
+          name: 'Bahrain',
+        },
+
+        {
+          code: '+20',
+          name: 'Egypt',
+        },
+        {
+          code: '+962',
+          name: 'Jordan',
+        },
+        {
+          code: '+968',
+          name: 'Oman',
+        },
+        {
+          code: '+974',
+          name: 'Qatar',
+        },
+        {
+          code: '+966',
+          name: 'Saudi Arabia',
+        },
+      ],
+      workType: null,
+      // workType: [
+      //   {
+      //     code: 'شركات خدمية',
+      //     name: '(تدريب - وكالة اعلانات ..إلخ)شركات خدمية',
+      //   },
+      //   {
+      //     code: 'شركات عقارات',
+      //     name: 'شركات عقارات',
+      //   },
+
+      //   {
+      //     code: 'مسوق عقاري',
+      //     name: 'مسوق عقاري',
+      //   },
+      // ],
     }
   },
+
   methods: {
-    changeStep(e) {
-      this.step1 = false
-      this.step2 = false
-      this.step3 = false
-      this[e] = true
+    getWork() {
+      this.axios.get('lists').then((data) => {
+        this.workType = data.data.lists.Work
+      })
     },
+  },
+  mounted() {
+    this.getWork()
+  },
+
+  setup() {
+    const auth = getAuth()
+
+    const userData = reactive({
+      name: '',
+      email: '',
+      employers: '',
+      phone: '',
+      countryCode: '+971',
+      work: '',
+    })
+    const verfication = ref('')
+    const demoData = reactive({
+      link: '',
+      username: '',
+      password: '',
+    })
+    let errMsg = ref('')
+
+    const initRecaptcha = () => {
+      setTimeout(() => {
+        window.recaptchaVerifier = new RecaptchaVerifier(
+          'sign-in-button',
+          {
+            size: 'invisible',
+            callback: (response) => {
+              // reCAPTCHA solved, allow signInWithPhoneNumber.
+              console.log(response)
+            },
+          },
+          auth,
+        )
+      }, 1000)
+    }
+    initRecaptcha()
+
+    async function getCode() {
+      if (userData.phone.length != 10) {
+        console.log('dsdasdas')
+        errMsg.value = 'Invalid Phone Number Format !'
+      } else {
+        const appVerifier = window.recaptchaVerifier
+        const phoneNumber = `${userData.countryCode}${userData.phone}`
+        axios.post('check-phone', { phone: phoneNumber }).then((data) => {
+          if (data.data.status == 0) {
+            console.log(data.data.status == 0)
+            signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+              .then((confirmationResult) => {
+                window.confirmationResult = confirmationResult
+                changeStep('step2')
+              })
+              .catch((error) => {
+                console.log(error)
+
+                console.log('Theres been an error', error)
+              })
+          } else if (data.data.status == 1) {
+            changeStep('step3')
+            demoData.link = data.data.data.link
+            demoData.username = data.data.data.username
+            demoData.password = data.data.data.password
+          }
+        })
+      }
+    }
+
+    function getCountryName(e) {
+      console.log(e)
+    }
+
+    async function verfiy() {
+      const code = verfication.value
+      // const code = getCodeFromUserInput(verfication.value)
+
+      window.confirmationResult
+        .confirm(code)
+        .then((result) => {
+          // User signed in successfully.
+          const user = result.user
+          let frmData = new FormData()
+          const phoneNumber = `${userData.countryCode}${userData.phone}`
+          frmData.append('name', userData.name)
+          frmData.append('email', userData.email)
+          frmData.append('phone', phoneNumber)
+          frmData.append('nemployees', userData.employers)
+          frmData.append('setting_id', userData.work)
+          frmData.append('country', 'egypt')
+          axios.post('add-client', frmData).then((data) => {
+            changeStep('step3')
+            demoData.link = data.data.data.link
+            demoData.username = data.data.data.username
+            demoData.password = data.data.data.password
+          })
+          console.log(user)
+          // ...
+        })
+        .catch((error) => {
+          // User couldn't sign in (bad verification code?)
+          console.log(error)
+          // ...
+        })
+    }
+
+    let steps = reactive({
+      step1: true,
+      step2: false,
+      step3: false,
+    })
+
+    function changeStep(e) {
+      steps.step1 = false
+      steps.step2 = false
+      steps.step3 = false
+      errMsg = ''
+      steps[e] = true
+    }
+
+    return {
+      verfication,
+      verfiy,
+      getCountryName,
+      errMsg,
+      userData,
+      getCode,
+      changeStep,
+      demoData,
+      steps,
+    }
   },
 }
 </script>
@@ -114,6 +416,22 @@ export default {
     z-index: -1;
   }
 }
+
+.result {
+  max-width: 450px;
+  margin: 0 auto;
+}
+.result p {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  a,
+  span {
+    text-align: center;
+    font-weight: 700;
+  }
+}
+
 span.step {
   display: inline-flex;
   width: 50px;
@@ -134,5 +452,21 @@ span.step {
 }
 .icon {
   font-size: 80px;
+}
+select {
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.fade-leave-to,
+.fade-leave-from {
+  opacity: 0;
+}
+.fade-enter-from .trial,
+.fade-leave-to .trial {
+  transform: scale(1.1);
 }
 </style>

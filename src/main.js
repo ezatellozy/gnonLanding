@@ -15,15 +15,33 @@ import VueTelInput from 'vue-tel-input'
 import 'vue-tel-input/dist/vue-tel-input.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-
 import AOS from 'aos'
+
 import 'aos/dist/aos.css'
 
-axios.defaults.baseURL = ``
+axios.defaults.baseURL = `https://rwad2.technomasrsystems.com/api`
 
 library.add(fas)
 library.add(fab)
 library.add(far)
+
+
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBBa16ljDWOF-OftcV2La_jOqyBF0JyXsM",
+  authDomain: "rwad-crm.firebaseapp.com",
+  projectId: "rwad-crm",
+  storageBucket: "rwad-crm.appspot.com",
+  messagingSenderId: "189966526103",
+  appId: "1:189966526103:web:eec77be65d17dec288ebd2"
+};
+
+initializeApp(firebaseConfig);
+
 
 const app = createApp(App)
 app.use(i18n)

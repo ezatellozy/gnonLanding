@@ -1,25 +1,6 @@
 <template>
   <div id="getStarted" class="get-started">
     <div class="mx-auto flex justify-between flex-wrap text-center">
-      <!-- <div class="w-full py-11 bg-primary md:w-1/2">
-        <form class="form px-4" @submit.prevent="">
-          <div class="form-inputs">
-            <input type="text" placeholder="Email" />
-          </div>
-          <div class="form-inputs">
-            <input type="text" placeholder="Phone number" />
-          </div>
-          <div class="form-inputs">
-            <textarea type="text" placeholder="Your message" />
-          </div>
-          <button
-            type="submit"
-            class="mt-4 bg-secondary py-2 w-full font-bold rounded-lg px-4 text-white"
-          >
-            Send
-          </button>
-        </form>
-      </div> -->
       <div class="w-full mx-auto social md:w-1/2 mt-11 self-center">
         <h4
           class="text-4xl text-white mb-11"
@@ -33,18 +14,18 @@
           data-aos="fade-up"
           data-aos-anchor-placement="center-bottom"
         >
-          <li>
-            <a href="#">
+          <li v-if="facebook">
+            <a :href="facebook" target="_blank">
               <font-awesome-icon class="icon" :icon="['fab', 'facebook']" />
             </a>
           </li>
-          <li>
-            <a href="#">
+          <li v-if="twitter">
+            <a :href="twitter" target="_blank">
               <font-awesome-icon class="icon" :icon="['fab', 'twitter']" />
             </a>
           </li>
-          <li>
-            <a href="#">
+          <li v-if="email">
+            <a :href="`mailto:${email}`">
               <font-awesome-icon class="icon" :icon="['fas', 'envelope']" />
             </a>
           </li>
@@ -55,7 +36,35 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      facebook: null,
+      twitter: null,
+      email: null,
+    }
+  },
+  mounted() {
+    this.getSocial()
+  },
+  methods: {
+    getSocial() {
+      this.axios.get('lists').then((data) => {
+        let result
+        result = data.data.lists.social
+        for (let i = 0; i < result.length; i += 1) {
+          if (result[i].key == 'facebook') {
+            this.facebook = result[i].value
+          } else if (result[i].key == 'twitter') {
+            this.twitter = result[i].value
+          } else if (result[i].key == 'mail') {
+            this.email = result[i].value
+          }
+        }
+      })
+    },
+  },
+}
 </script>
 
 <style scoped lang="scss">

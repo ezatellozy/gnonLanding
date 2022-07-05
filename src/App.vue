@@ -12,6 +12,9 @@
 </template>
 
 <script>
+import { onMounted } from 'vue'
+import AOS from 'aos'
+
 import MainHeader from './components/MainHeader.vue'
 
 export default {
@@ -24,6 +27,11 @@ export default {
     }
   },
   components: { MainHeader },
+  setup() {
+    onMounted(() => {
+      AOS.init()
+    })
+  },
 }
 </script>
 

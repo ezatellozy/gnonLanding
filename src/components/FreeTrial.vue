@@ -3,7 +3,7 @@
     <h2 class="text-center font-bold text-xl text-primary mb-4">
       {{ $t('misc.Enter your data to get your free trial copy') }}
     </h2>
-    <form class="p-5" @submit.prevent="">
+    <form class="p-5" @submit.prevent="submit">
       <div class="form-inputs">
         <input
           class="w-full"
@@ -17,7 +17,7 @@
           class="w-4/12"
           :class="$i18n.locale == 'en' ? 'mr-2' : 'ml-2'"
           name="country-code"
-          @change="selected($event)"
+          v-model="countryCode"
         >
           <option
             v-for="country in countries"
@@ -45,12 +45,7 @@
         />
       </div>
       <div class="form-inputs">
-        <select
-          name="country-code"
-          class="w-full"
-          v-model="work"
-          @change="selected($event)"
-        >
+        <select name="country-code" class="w-full" v-model="work">
           <option value="" disabled>{{ $t('placeholder.crmUsingFor') }}</option>
           <option
             v-for="item in workType"
@@ -73,7 +68,7 @@
 
       <button
         type="submit"
-        @click="submit"
+        id="sign-in-button"
         class="mt-4 bg-secondary py-2 w-full font-bold rounded-lg px-4 text-white"
       >
         {{ $t('buttons.Start Now') }}
@@ -148,15 +143,18 @@ export default {
     modal() {
       this.$emit('modal')
     },
-    selected(e) {
-      this.countryCode = e.target.value
-    },
+
     submit() {
-      console.log(this.name)
-      console.log(this.email)
-      console.log(this.employers)
-      console.log(this.work)
-      console.log(`${this.countryCode}${this.phone}`)
+      let data = {
+        name: this.name,
+        email: this.email,
+        employers: this.employers,
+        work: this.work,
+        countryCode: this.countryCode,
+        phone: this.phone,
+      }
+
+      this.$emit('data', data)
     },
   },
 }

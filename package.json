@@ -17,6 +17,7 @@
     "aos": "^2.3.4",
     "autoprefixer": "^10",
     "axios": "^0.27.2",
+    "firebase": "^9.8.4",
     "js-cookie": "^3.0.1",
     "postcss": "^8",
     "tailwindcss": "^3",
