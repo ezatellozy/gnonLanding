@@ -19,7 +19,13 @@ import AOS from 'aos'
 
 import 'aos/dist/aos.css'
 
-axios.defaults.baseURL = `https://rwad2.technomasrsystems.com/api`
+axios.defaults.baseURL = `https://dashboard.rwadsolutions.com/api`
+
+axios.defaults.headers = {
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+  lang: i18n.global.locale,
+}
 
 library.add(fas)
 library.add(fab)

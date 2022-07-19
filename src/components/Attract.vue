@@ -1,18 +1,10 @@
 <template>
   <div class="bg-third py-11">
-    <h2 class="text-center font-bold text-3xl mb-11 text-primary">
-      {{ title }}
-    </h2>
     <div class="container mx-auto flex justify-center flex-wrap">
       <attract-card
-        v-for="feature in features"
+        v-for="feature in items"
         :key="feature.id"
-        :withBg="withBg"
-        :title="$i18n.locale == 'en' ? feature.titleEn : feature.titleAr"
-        :description="
-          $i18n.locale == 'en' ? feature.descriptionEn : feature.descriptionAr
-        "
-        :imgSrc="feature.imgSrc"
+        :items="feature"
       />
     </div>
   </div>
@@ -21,16 +13,9 @@
 <script>
 import AttractCard from '@/components/AttractCard.vue'
 export default {
-  props: {
-    title: {
-      default: '',
-    },
-    withBg: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  props: ['items'],
   components: { AttractCard },
+
   data() {
     return {
       features: [

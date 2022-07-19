@@ -11,7 +11,11 @@
       </h3>
 
       <p class="text-center text-md mb-11">
-        نسعد بتقديم خدماتنا للعملاء الذين كانوا شركاء النجاح لنا
+        {{
+          $t(
+            'misc.We are happy to provide our services to clients who were our success partners',
+          )
+        }}
       </p>
       <div
         style="margin: 100px 0;"
@@ -19,8 +23,8 @@
         data-aos-anchor-placement="center-bottom"
       >
         <carousel v-bind="settings">
-          <slide v-for="n in 5" :key="n">
-            <card />
+          <slide v-for="item in items" :key="item.id">
+            <card :items="item" />
           </slide>
         </carousel>
       </div>
@@ -42,6 +46,7 @@ import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide } from 'vue3-carousel'
 import FreeTrial from './FreeTrial.vue'
 export default {
+  props: ['items'],
   components: { Card, Carousel, Slide, FreeTrial },
   data() {
     return {

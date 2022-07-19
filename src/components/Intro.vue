@@ -5,27 +5,25 @@
     <!-- <main-header class="fixed w-full" @modal="modal" /> -->
     <div class="container mx-auto flex justify-between items-center flex-wrap">
       <div
-        class="info xl:px-11 mb-11 w-full lg:w-1/2"
+        class="info xl:px-11 mb-11 w-full"
         data-aos="zoom-in"
         data-aos-duration="1500"
+        :class="items.image ? ' lg:w-1/2' : ''"
       >
         <h1 class="text-3xl text-primary">
-          {{ $t('misc.introTitle') }}
+          {{ items.title }}
         </h1>
         <h2 class="mt-11 pt-4 text-lg line-height">
-          {{ $t('misc.introDesc') }}
+          {{ items.description }}
         </h2>
       </div>
       <div
+        v-if="items.image"
         class="image w-full lg:w-1/2"
         data-aos="zoom-in"
         data-aos-duration="1500"
       >
-        <img
-          src="@/assets/header-bulb-table.png"
-          class="w-full"
-          alt="rwad-header"
-        />
+        <img :src="items.image" class="w-full" alt="rwad-header" />
       </div>
     </div>
   </section>
@@ -35,6 +33,7 @@
 import FreeTrial from '@/components/FreeTrial.vue'
 // import MainHeader from './MainHeader.vue'
 export default {
+  props: ['items'],
   components: { FreeTrial },
   data() {
     return {

@@ -1,13 +1,15 @@
 <template>
-  <div class="image-holder">
-    <!-- <img :src="imageSrc" alt="rwad" /> -->
-    <img src="@/assets/customer-logo-1.png" alt="rwad" />
+  <div v-if="items">
+    <div class="image-holder" v-if="items.image">
+      <!-- <img :src="imageSrc" alt="rwad" /> -->
+      <img :src="items.image" alt="rwad" />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  // props: [imageSrc],
+  props: ['items'],
   data() {
     return {
       rank: 3,

@@ -13,12 +13,16 @@
         data-aos="fade-up"
         data-aos-anchor-placement="center-bottom"
       >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        {{
+          $t(
+            'misc.We are happy to provide our services to clients who were our success partners',
+          )
+        }}
       </p>
       <div>
         <carousel v-bind="settings">
-          <slide v-for="n in 5" :key="n">
-            <card />
+          <slide v-for="item in items" :key="item.id">
+            <card :items="item" />
           </slide>
         </carousel>
       </div>
@@ -32,6 +36,7 @@ import Card from './Card.vue'
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide } from 'vue3-carousel'
 export default {
+  props: ['items'],
   components: { Card, Carousel, Slide },
   data() {
     return {

@@ -1,11 +1,12 @@
 <template>
-  <div class="card" :class="withBg ? 'bg-white' : ''">
+  <div class="card bg-white">
     <div
       class="card-icon"
       data-aos="fade-up"
       data-aos-anchor-placement="center-bottom"
+      v-if="items.image"
     >
-      <img class="rounded-full" :src="imgSrc" alt="rwad" />
+      <img class="rounded-full" :src="items.image" alt="rwad" />
     </div>
     <div
       class="text-center"
@@ -13,24 +14,16 @@
       data-aos-anchor-placement="center-bottom"
     >
       <h5 class="text-lg font-bold mb-2 text-primary">
-        {{ title }}
+        {{ items.title }}
       </h5>
-      <p v-html="description" class="px-4"></p>
+      <p v-html="items.description" class="px-4"></p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    withBg: {
-      type: Boolean,
-      default: false,
-    },
-    imgSrc: String,
-    title: String,
-    description: String,
-  },
+  props: ['items'],
 }
 </script>
 

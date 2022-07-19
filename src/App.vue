@@ -7,6 +7,7 @@
           <component :is="Component" />
         </transition>
       </router-view>
+      <div id="repatch-container"></div>
     </div>
   </div>
 </template>

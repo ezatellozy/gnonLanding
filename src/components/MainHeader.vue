@@ -36,7 +36,7 @@
                 to="/register"
                 class="bg-primary hover:bg-secondary text-white font-bold text-sm px-4 py-2 rounded-lg"
               >
-                أحصل علي نسختك التجريبيه
+                {{ $t('misc.free trial') }}
               </router-link>
             </li>
           </ul>

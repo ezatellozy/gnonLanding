@@ -93,7 +93,7 @@
               :placeholder="$t('placeholder.number')"
             />
           </div>
-          <div class="err-msg">{{ errMsg }}</div>
+          <div v-if="errMsg" class="err-msg">{{ $t(`misc.${errMsg}`) }}</div>
 
           <button
             type="submit"
@@ -123,7 +123,7 @@
               {{ `${userData.countryCode}${userData.phone}` }}
             </span>
           </p>
-          <div class="err-msg">{{ errMsg }}</div>
+          <div v-if="errMsg" class="err-msg">{{ $t(`misc.${errMsg}`) }}</div>
           <div class="form-inputs text-center">
             <input
               id="verfication"
@@ -135,9 +135,9 @@
           </div>
           <p class="text-center text-gray-400 mt-4">
             {{ $t('misc.Didnt receive the code') }}
-            <span class="text-primary font-bold">
+            <button class="text-primary font-bold pointer" @click="getCode">
               {{ $t('buttons.RESEND') }}
-            </span>
+            </button>
           </p>
 
           <button
@@ -153,19 +153,27 @@
             {{ $t('misc.your free trial details') }}
           </h2>
           <div class="info">
-            <p v-if="demoData.link">
-              Link :
+            <p v-if="demoData.link" class="flex-col">
+              <span>
+                {{ $t('misc.Link') }}
+              </span>
               <a :href="demoData.link" target="_blank">{{ demoData.link }}</a>
             </p>
             <p v-if="demoData.username">
-              username :
               <span>
+                {{ $t('misc.username') }}
+              </span>
+
+              <span class="inline-block flex-1 py-2 px-4 border rounded">
                 {{ demoData.username }}
               </span>
             </p>
             <p v-if="demoData.password">
-              password :
               <span>
+                {{ $t('misc.password') }}
+              </span>
+
+              <span class="inline-block flex-1 py-2 px-4 border rounded">
                 {{ demoData.password }}
               </span>
             </p>
@@ -198,57 +206,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      countries: [
-        {
-          code: '+971',
-          name: 'United Arab Emirates',
-        },
-        {
-          code: '+965',
-          name: 'Kuwait',
-        },
-        {
-          code: '+973',
-          name: 'Bahrain',
-        },
-
-        {
-          code: '+20',
-          name: 'Egypt',
-        },
-        {
-          code: '+962',
-          name: 'Jordan',
-        },
-        {
-          code: '+968',
-          name: 'Oman',
-        },
-        {
-          code: '+974',
-          name: 'Qatar',
-        },
-        {
-          code: '+966',
-          name: 'Saudi Arabia',
-        },
-      ],
       workType: null,
-      // workType: [
-      //   {
-      //     code: 'شركات خدمية',
-      //     name: '(تدريب - وكالة اعلانات ..إلخ)شركات خدمية',
-      //   },
-      //   {
-      //     code: 'شركات عقارات',
-      //     name: 'شركات عقارات',
-      //   },
-
-      //   {
-      //     code: 'مسوق عقاري',
-      //     name: 'مسوق عقاري',
-      //   },
-      // ],
     }
   },
 
@@ -264,6 +222,42 @@ export default {
   },
 
   setup() {
+    const countries = [
+      {
+        code: '+971',
+        name: 'United Arab Emirates',
+      },
+      {
+        code: '+965',
+        name: 'Kuwait',
+      },
+      {
+        code: '+973',
+        name: 'Bahrain',
+      },
+
+      {
+        code: '+20',
+        name: 'Egypt',
+      },
+      {
+        code: '+962',
+        name: 'Jordan',
+      },
+      {
+        code: '+968',
+        name: 'Oman',
+      },
+      {
+        code: '+974',
+        name: 'Qatar',
+      },
+      {
+        code: '+966',
+        name: 'Saudi Arabia',
+      },
+    ]
+
     const auth = getAuth()
 
     const userData = reactive({
@@ -273,6 +267,7 @@ export default {
       phone: '',
       countryCode: '+971',
       work: '',
+      country: '',
     })
     const verfication = ref('')
     const demoData = reactive({
@@ -284,25 +279,32 @@ export default {
 
     const initRecaptcha = () => {
       setTimeout(() => {
-        window.recaptchaVerifier = new RecaptchaVerifier(
-          'sign-in-button',
-          {
-            size: 'invisible',
-            callback: (response) => {
-              // reCAPTCHA solved, allow signInWithPhoneNumber.
-              console.log(response)
+        if (!window.recaptchaVerifier) {
+          window.recaptchaVerifier = new RecaptchaVerifier(
+            'repatch-container',
+            {
+              size: 'invisible',
+              callback: (response) => {
+                // reCAPTCHA solved, allow signInWithPhoneNumber.
+                console.log(response)
+              },
             },
-          },
-          auth,
-        )
+            auth,
+          )
+        }
       }, 1000)
     }
     initRecaptcha()
 
     async function getCode() {
+      let countryName = countries.filter((el) => {
+        return el.code == userData.countryCode
+      })
+
+      userData.country = countryName[0].name
+
       if (userData.phone.length != 10) {
-        console.log('dsdasdas')
-        errMsg.value = 'Invalid Phone Number Format !'
+        errMsg.value = 'Invalid Phone Number Format'
       } else {
         const appVerifier = window.recaptchaVerifier
         const phoneNumber = `${userData.countryCode}${userData.phone}`
@@ -335,7 +337,6 @@ export default {
 
     async function verfiy() {
       const code = verfication.value
-      // const code = getCodeFromUserInput(verfication.value)
 
       window.confirmationResult
         .confirm(code)
@@ -349,7 +350,7 @@ export default {
           frmData.append('phone', phoneNumber)
           frmData.append('nemployees', userData.employers)
           frmData.append('setting_id', userData.work)
-          frmData.append('country', 'egypt')
+          frmData.append('country', userData.country)
           axios.post('add-client', frmData).then((data) => {
             changeStep('step3')
             demoData.link = data.data.data.link
@@ -386,6 +387,7 @@ export default {
       getCountryName,
       errMsg,
       userData,
+      countries,
       getCode,
       changeStep,
       demoData,
@@ -425,11 +427,28 @@ export default {
   display: flex;
   justify-content: space-between;
   font-size: 16px;
+  margin-bottom: 10px;
+  &:first-child {
+    a {
+      margin: 10px 0;
+      color: #055e93;
+    }
+  }
+
   a,
   span {
     text-align: center;
     font-weight: 700;
+    &:first-child {
+      width: 100px;
+      font-size: 14px;
+      align-self: center;
+    }
   }
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 span.step {
@@ -468,5 +487,10 @@ select {
 .fade-enter-from .trial,
 .fade-leave-to .trial {
   transform: scale(1.1);
+}
+
+.err-msg {
+  color: red;
+  text-align: center;
 }
 </style>

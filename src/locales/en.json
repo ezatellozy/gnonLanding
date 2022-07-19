@@ -17,6 +17,12 @@
     "VERIFY": "VERIFY"
   },
   "misc": {
+    "Link":"Link",
+    "We are happy to provide our services to clients who were our success partners":"We are happy to provide our services to clients who were our success partners",
+    "username":"Username",
+    "free trial":"Get your free trial",
+    "Invalid Phone Number Format":"Invalid Phone Number Format!",
+    "password":"Password",
     "partners": "Our partners",
     "Phone number verification": "Phone number verification",
     "Enter the code sent to": "Enter the code sent to",
