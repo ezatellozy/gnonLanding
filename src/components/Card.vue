@@ -18,4 +18,11 @@ export default {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.image-holder {
+  img {
+    width: 100%;
+    height: 150px;
+  }
+}
+</style>

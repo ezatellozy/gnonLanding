@@ -5,12 +5,12 @@
   >
     <div class="container mx-auto flex justify-between items-center">
       <div class="logo font-bold mx-11">
-        <a href="/">
-          <img src="@/assets/logo.png" alt="logo" />
+        <a href="/" v-if="logo">
+          <img :src="logo.image" alt="logo" />
         </a>
       </div>
       <div class="flex items-center" v-if="this.$route.name == 'home'">
-        <locale-switcher class="mx-4" />
+        <!-- <locale-switcher class="mx-4" /> -->
         <button class="text-2xl lg:hidden" @click="mobile = !mobile">
           <font-awesome-icon :icon="['fas', 'bars']" />
         </button>
@@ -47,22 +47,22 @@
 </template>
 
 <script>
-import LocaleSwitcher from './LocaleSwitcher.vue'
+// import LocaleSwitcher from './LocaleSwitcher.vue'
 export default {
-  components: { LocaleSwitcher },
+  // components: { LocaleSwitcher },
   data() {
     return {
       scroll: false,
       mobile: false,
       mobileMenu: true,
       notMain: true,
+      logo: null,
     }
   },
   created() {
     window.addEventListener('scroll', this.checkScroll)
     window.addEventListener('resize', this.checkSize)
   },
-  mounted() {},
   methods: {
     modal() {
       this.$emit('modal')
@@ -89,6 +89,15 @@ export default {
       this.scroll = false
       return
     },
+    getSettings() {
+      this.axios.get('lists').then((data) => {
+        this.logo = data.data.lists.logo
+      })
+    },
+  },
+
+  mounted() {
+    this.getSettings()
   },
 }
 </script>

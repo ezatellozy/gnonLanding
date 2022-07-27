@@ -43,8 +43,8 @@ export default {
       settings: {
         autoplay: 2000,
         itemsToShow: 1,
-        wrapAround: true,
-        snapAlign: 'left',
+        // wrapAround: true,
+        snapAlign: 'center',
         breakpoints: {
           1280: {
             itemsToShow: 4,
@@ -69,6 +69,9 @@ export default {
       margin: 0 auto;
       margin-bottom: 40px;
     }
+  }
+  .carousel__track {
+    justify-content: center;
   }
 }
 </style>

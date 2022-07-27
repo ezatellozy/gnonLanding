@@ -15,20 +15,25 @@
         <h1 class="font-bold text-3xl text-titleColor mb-4">
           {{ item.title }}
         </h1>
+        <p>{{ item.description }}</p>
 
-        <div v-if="item.features">
+        <div v-if="item.featureList">
           <div
-            v-for="feature in item.features"
+            v-for="feature in item.featureList"
             :key="feature.id"
             data-aos="fade-up"
             data-aos-anchor-placement="center-bottom"
           >
             <div class="title flex items-center mb-2 mt-11">
-              <font-awesome-icon
+              <span
+                :class="feature.icon"
+                class="text-white bg-primary p-2 rounded-xl"
+              ></span>
+              <!-- <font-awesome-icon
                 :icon="['fas', 'magnifying-glass']"
                 size="lg"
                 class="text-white bg-primary p-2 rounded-xl"
-              ></font-awesome-icon>
+              ></font-awesome-icon> -->
               <h2 class="px-2 text-primary font-bold text-lg">
                 {{ feature.title }}
               </h2>

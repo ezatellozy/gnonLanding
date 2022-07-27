@@ -6,8 +6,9 @@
           class="text-4xl text-white mb-11"
           data-aos="fade-up"
           data-aos-anchor-placement="center-bottom"
+          v-if="logo"
         >
-          <img class="logo" src="@/assets/logo.png" alt="logo" />
+          <img class="logo" :src="logo.image" alt="logo" />
         </h4>
         <ul
           class="links text-white flex justify-center"
@@ -32,11 +33,21 @@
         </ul>
       </div>
     </div>
+    <div class="copyright">
+      <div class="container mx-auto">
+        <p>
+          كافة الحقوق محفوظة
+          <a href="https://rwadsolutions.com/">لحلول رواد</a>
+          &copy; {{ year }}
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: ['logo'],
   data() {
     return {
       facebook: null,
@@ -64,6 +75,11 @@ export default {
       })
     },
   },
+  computed: {
+    year() {
+      return new Date().getFullYear()
+    },
+  },
 }
 </script>
 
@@ -88,5 +104,17 @@ export default {
 .logo {
   max-width: 150px;
   margin: 0 auto;
+}
+.copyright {
+  background: #055e93;
+  p {
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    a {
+      @apply text-secondary;
+    }
+  }
 }
 </style>

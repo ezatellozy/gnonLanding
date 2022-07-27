@@ -54,7 +54,7 @@ export default {
       settings: {
         autoplay: 2000,
         itemsToShow: 1,
-        wrapAround: true,
+        // wrapAround: true,
         snapAlign: 'left',
 
         breakpoints: {
@@ -76,7 +76,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .clients {
   min-height: 300px;
   position: relative;
@@ -103,6 +103,9 @@ export default {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.63);
     z-index: 10;
+  }
+  .carousel__track {
+    justify-content: center;
   }
 }
 </style>

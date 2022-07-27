@@ -1,9 +1,11 @@
 @import 'tailwind';
+@import 'all.min.css';
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
 :root {
   scroll-behavior: smooth;
 }
+
 body {
   font-family: 'Cairo';
 }
@@ -11,6 +13,7 @@ body {
 .line-height {
   line-height: 1.8;
 }
+
 .is-rtl {
   direction: rtl;
 }
