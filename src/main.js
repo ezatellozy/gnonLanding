@@ -19,7 +19,7 @@ import AOS from 'aos'
 
 import 'aos/dist/aos.css'
 
-axios.defaults.baseURL = `https://dashboard.rwadsolutions.com/api`
+axios.defaults.baseURL = `https://crm-landing-dashboard.rwadsolutions.com/api`
 
 axios.defaults.headers = {
   Accept: 'application/json',
@@ -38,12 +38,13 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBBa16ljDWOF-OftcV2La_jOqyBF0JyXsM",
-  authDomain: "rwad-crm.firebaseapp.com",
-  projectId: "rwad-crm",
-  storageBucket: "rwad-crm.appspot.com",
-  messagingSenderId: "189966526103",
-  appId: "1:189966526103:web:eec77be65d17dec288ebd2"
+  apiKey: "AIzaSyAF0ALo_CeXLacznSL0DX3V9kWvEj2Op6U",
+  authDomain: "rwad-c4f30.firebaseapp.com",
+  projectId: "rwad-c4f30",
+  storageBucket: "rwad-c4f30.appspot.com",
+  messagingSenderId: "524917564677",
+  appId: "1:524917564677:web:c7f050fc83233b9002436c",
+  measurementId: "G-KGJBSVQH2L"
 };
 
 initializeApp(firebaseConfig);

@@ -20,16 +20,16 @@
               <a href="#">{{ $t('nav.home') }}</a>
             </li>
             <li>
-              <a href="#features">{{ $t('nav.features') }}</a>
+              <a href="/#features">{{ $t('nav.features') }}</a>
             </li>
             <li>
-              <a href="#partners">{{ $t('nav.partners') }}</a>
+              <a href="/#partners">{{ $t('nav.partners') }}</a>
             </li>
             <li>
-              <a href="#clients">{{ $t('nav.clients') }}</a>
+              <a href="/#clients">{{ $t('nav.clients') }}</a>
             </li>
             <li>
-              <a href="#getStarted">{{ $t('nav.Getstarted') }}</a>
+              <a href="/#getStarted">{{ $t('nav.Getstarted') }}</a>
             </li>
             <li>
               <router-link

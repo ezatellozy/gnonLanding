@@ -1,6 +1,7 @@
 <template>
   <div class="container register mx-auto flex justify-between flex-wrap">
     <div class="p-5 w-full md:w-1/2">
+      <div></div>
       <div class="steps flex justify-between items-center">
         <span
           class="step step1"
@@ -32,7 +33,7 @@
           </div>
           <div class="form-inputs flex justify-between">
             <select
-              class="w-4/12"
+              class="w-4/12 order-1"
               :class="$i18n.locale == 'en' ? 'mr-2' : 'ml-2'"
               name="country-code"
               v-model="userData.countryCode"
@@ -51,6 +52,7 @@
               type="phone"
               required
               v-model="userData.phone"
+              oninput="this.value = this.value.replace(/^0/g, '');"
               :placeholder="$t('placeholder.phone')"
             />
           </div>
@@ -64,7 +66,7 @@
               :placeholder="$t('placeholder.email')"
             />
           </div>
-          <div class="form-inputs">
+          <div class="form-inputs" v-if="activity">
             <select
               name="country-code"
               required
@@ -75,7 +77,7 @@
                 {{ $t('placeholder.crmUsingFor') }}
               </option>
               <option
-                v-for="item in workType"
+                v-for="item in activity"
                 :key="item.id"
                 :value="item.id"
                 name="work-code"
@@ -93,14 +95,18 @@
               :placeholder="$t('placeholder.number')"
             />
           </div>
-          <div v-if="errMsg" class="err-msg">{{ $t(`misc.${errMsg}`) }}</div>
+
+          <div v-if="errMsg" class="err-msg">{{ errMsg }}</div>
 
           <button
             type="submit"
             id="sign-in-button"
             class="mt-4 bg-secondary py-2 w-full font-bold rounded-lg px-4 text-white"
           >
-            {{ $t('buttons.Start Now') }}
+            <span class="spinner-border" v-if="loading"></span>
+            <span v-else>
+              {{ $t('buttons.Start Now') }}
+            </span>
           </button>
         </form>
       </div>
@@ -123,7 +129,7 @@
               {{ `${userData.countryCode}${userData.phone}` }}
             </span>
           </p>
-          <div v-if="errMsg" class="err-msg">{{ $t(`misc.${errMsg}`) }}</div>
+
           <div class="form-inputs text-center">
             <input
               id="verfication"
@@ -133,17 +139,27 @@
               :placeholder="$t('placeholder.verfication')"
             />
           </div>
+          <div v-if="errMsg" class="err-msg">{{ errMsg }}</div>
           <p class="text-center text-gray-400 mt-4">
             {{ $t('misc.Didnt receive the code') }}
-            <button class="text-primary font-bold pointer" @click="getCode">
+            <button
+              class="text-primary font-bold pointer"
+              @click="getCode"
+              v-if="time == 0"
+            >
               {{ $t('buttons.RESEND') }}
             </button>
+            <span v-else class="text-primary font-bold">s {{ time }}</span>
           </p>
 
           <button
             class="btn bg-secondary w-full mt-11 font-bold text-white px-4 py-4 rounded"
+            :disabled="verfication == ''"
           >
-            {{ $t('buttons.VERIFY') }}
+            <span class="spinner-border" v-if="loading"></span>
+            <span v-else>
+              {{ $t('buttons.VERIFY') }}
+            </span>
           </button>
         </form>
       </div>
@@ -159,6 +175,7 @@
               </span>
               <a :href="demoData.link" target="_blank">{{ demoData.link }}</a>
             </p>
+
             <p v-if="demoData.username">
               <span>
                 {{ $t('misc.username') }}
@@ -181,12 +198,12 @@
         </div>
       </div>
     </div>
-    <div class="info w-full md:flex-1 p-5">
+    <div class="info w-full md:flex-1 p-5" v-if="homeDesc">
       <h1 class="text-3xl text-primary">
-        {{ $t('misc.introTitle') }}
+        {{ homeDesc.title }}
       </h1>
       <h2 class="mt-11 text-lg line-height">
-        {{ $t('misc.introDesc') }}
+        {{ homeDesc.description }}
       </h2>
     </div>
   </div>
@@ -206,14 +223,16 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      workType: null,
+      activity: null,
+      homeDesc: null,
     }
   },
 
   methods: {
     getWork() {
       this.axios.get('lists').then((data) => {
-        this.workType = data.data.lists.Work
+        this.activity = data.data.lists.Work
+        this.homeDesc = data.data.lists.home[0]
       })
     },
   },
@@ -259,23 +278,25 @@ export default {
     ]
 
     const auth = getAuth()
-
+    const time = ref(60)
     const userData = reactive({
       name: '',
       email: '',
       employers: '',
       phone: '',
-      countryCode: '+971',
+      countryCode: '+20',
       work: '',
+
       country: '',
     })
     const verfication = ref('')
+    let loading = ref(false)
     const demoData = reactive({
       link: '',
       username: '',
       password: '',
     })
-    let errMsg = ref('')
+    const errMsg = ref(null)
 
     const initRecaptcha = () => {
       setTimeout(() => {
@@ -284,10 +305,9 @@ export default {
             'repatch-container',
             {
               size: 'invisible',
-              callback: (response) => {
-                // reCAPTCHA solved, allow signInWithPhoneNumber.
-                console.log(response)
-              },
+              // callback: (response) => {
+              //   console.log(response)
+              // },
             },
             auth,
           )
@@ -297,6 +317,9 @@ export default {
     initRecaptcha()
 
     async function getCode() {
+      loading.value = true
+      errMsg.value = ''
+
       let countryName = countries.filter((el) => {
         return el.code == userData.countryCode
       })
@@ -304,28 +327,39 @@ export default {
       userData.country = countryName[0].name
 
       if (userData.phone.length != 10) {
-        errMsg.value = 'Invalid Phone Number Format'
+        loading.value = false
+        errMsg.value = 'رقم الهاتف غير صحيح'
       } else {
         const appVerifier = window.recaptchaVerifier
         const phoneNumber = `${userData.countryCode}${userData.phone}`
         axios.post('check-phone', { phone: phoneNumber }).then((data) => {
           if (data.data.status == 0) {
-            console.log(data.data.status == 0)
+            initRecaptcha()
             signInWithPhoneNumber(auth, phoneNumber, appVerifier)
               .then((confirmationResult) => {
                 window.confirmationResult = confirmationResult
                 changeStep('step2')
+                errMsg.value = ''
+                loading.value = false
+                time.value = 60
               })
-              .catch((error) => {
-                console.log(error)
-
-                console.log('Theres been an error', error)
+              .catch(() => {
+                errMsg.value = 'رقم الهاتف غير صحيح'
+                loading.value = false
               })
           } else if (data.data.status == 1) {
+            errMsg.value = ''
             changeStep('step3')
             demoData.link = data.data.data.link
             demoData.username = data.data.data.username
             demoData.password = data.data.data.password
+            loading.value = false
+            userData.name = ''
+            userData.email = ''
+            userData.employers = ''
+            userData.work = ''
+            userData.phone = ''
+            userData.country = ''
           }
         })
       }
@@ -336,6 +370,7 @@ export default {
     }
 
     async function verfiy() {
+      loading.value = true
       const code = verfication.value
 
       window.confirmationResult
@@ -349,21 +384,28 @@ export default {
           frmData.append('email', userData.email)
           frmData.append('phone', phoneNumber)
           frmData.append('nemployees', userData.employers)
-          frmData.append('setting_id', userData.work)
+          frmData.append('activity', userData.work)
           frmData.append('country', userData.country)
           axios.post('add-client', frmData).then((data) => {
             changeStep('step3')
             demoData.link = data.data.data.link
             demoData.username = data.data.data.username
             demoData.password = data.data.data.password
+            loading.value = false
+            userData.name = ''
+            userData.email = ''
+            userData.employers = ''
+            userData.work = ''
+            userData.country = ''
           })
           console.log(user)
           // ...
         })
         .catch((error) => {
           // User couldn't sign in (bad verification code?)
-          console.log(error)
-          // ...
+          errMsg.value = error.message
+          errMsg.value = 'الكود غير صحيح او منتهي جرب مره اخري'
+          loading.value = false
         })
     }
 
@@ -377,9 +419,15 @@ export default {
       steps.step1 = false
       steps.step2 = false
       steps.step3 = false
-      errMsg = ''
+      errMsg.value = ''
       steps[e] = true
     }
+
+    const countDown = setInterval(() => {
+      time.value -= 1
+
+      if (time.value == 0) clearInterval(countDown)
+    }, 1000)
 
     return {
       verfication,
@@ -388,7 +436,9 @@ export default {
       errMsg,
       userData,
       countries,
+      loading,
       getCode,
+      time,
       changeStep,
       demoData,
       steps,
@@ -427,6 +477,7 @@ export default {
   display: flex;
   justify-content: space-between;
   font-size: 16px;
+
   margin-bottom: 10px;
   &:first-child {
     a {
@@ -439,6 +490,7 @@ export default {
   span {
     text-align: center;
     font-weight: 700;
+
     &:first-child {
       width: 100px;
       font-size: 14px;
@@ -479,6 +531,9 @@ select {
   padding-right: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  &.order-1 {
+    margin: 0 8px 8px 0;
+  }
 }
 .fade-leave-to,
 .fade-leave-from {
@@ -492,5 +547,20 @@ select {
 .err-msg {
   color: red;
   text-align: center;
+}
+.spinner-border {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: -0.125em;
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: 0.75s linear infinite spinner-border;
+}
+@keyframes spinner-border {
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
